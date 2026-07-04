@@ -42,11 +42,11 @@ const doScreen = () => run('screen', () => screenProposal(store.selectedId), 'Sc
 const doVoteYes = () => run('voteyes', () => voteOnProposal(store.selectedId, true), 'Casting YES vote')
 const doVoteNo = () => run('voteno', () => voteOnProposal(store.selectedId, false), 'Casting NO vote')
 const doFinalize = () => run('finalize', () => finalizeVote(store.selectedId), 'Finalizing vote')
-const doSubmitEvidence = (i: number) => {
+const doSubmitEvidence = (i: any) => {
   if (!evidenceUrl.value.trim()) { txnote.value = 'Paste an evidence URL first (GitHub or live app links verify most reliably).'; return }
-  run('evidence', () => submitEvidence(store.selectedId, i, evidenceUrl.value.trim()), 'Submitting evidence')
+  run('evidence', () => submitEvidence(store.selectedId, Number(i), evidenceUrl.value.trim()), 'Submitting evidence')
 }
-const doVerify = (i: number) => run('verify', () => verifyMilestone(store.selectedId, i), 'Verifying milestone through consensus')
+const doVerify = (i: any) => run('verify', () => verifyMilestone(store.selectedId, Number(i)), 'Verifying milestone through consensus')
 
 function mdot(m: any): string {
   const s = (m.status || '').toUpperCase()

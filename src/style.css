@@ -1,0 +1,33 @@
+:root{
+  --bg:#060E12; --card:#0C1B22; --card2:#091419; --ink:#E9DFC9; --ink2:#8BA1A6;
+  --bronze:#C97B2A; --bronze-hi:#E8A04C; --bronze-soft:rgba(201,123,42,0.16);
+  --line:#16303A; --overlay:rgba(4,12,16,0.74);
+  --ok:#5DCAA5; --ok-line:#24614C; --bad:#E24B4A;
+}
+[data-theme="light"]{
+  --bg:#F5F1E8; --card:#FFFFFF; --card2:#EDE7D8; --ink:#26261F; --ink2:#6B675C;
+  --bronze:#A65F14; --bronze-hi:#A65F14; --bronze-soft:rgba(166,95,20,0.10);
+  --line:#DDD5C4;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:Georgia,'Times New Roman',serif;transition:background .35s,color .35s;min-height:100vh}
+.sans{font-family:Verdana,'Segoe UI',Arial,sans-serif}
+button{font-family:inherit;cursor:pointer}
+input,textarea,select{font-family:Verdana,'Segoe UI',Arial,sans-serif;background:var(--card2);border:1px solid var(--line);border-radius:8px;color:var(--ink);padding:11px 14px;font-size:13.5px;width:100%}
+input:focus,textarea:focus{outline:none;border-color:var(--bronze)}
+.btn{display:inline-block;padding:12px 26px;border-radius:8px;font-size:13px;letter-spacing:1px;border:none;font-family:Verdana,'Segoe UI',Arial,sans-serif}
+.btn.primary{background:var(--bronze);color:#08141A;font-weight:bold}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.eyebrow{font-size:11px;letter-spacing:3px;color:var(--bronze-hi);text-transform:uppercase;margin-bottom:14px;font-family:Verdana,Arial,sans-serif}
+.badge{font-size:9px;letter-spacing:1.5px;padding:4px 12px;border-radius:20px;white-space:nowrap;font-family:Verdana,Arial,sans-serif}
+.badge.bronze{background:var(--bronze-soft);color:var(--bronze-hi);border:1px solid var(--bronze)}
+.badge.green{background:rgba(93,202,165,0.12);color:var(--ok);border:1px solid var(--ok-line)}
+.badge.red{background:rgba(226,75,74,0.12);color:var(--bad);border:1px solid #7a2a2a}
+.badge.gray{background:var(--card2);color:var(--ink2);border:1px solid var(--line)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:24px}
+.reveal{opacity:0;transform:translateY(36px);transition:opacity .7s ease,transform .7s ease}
+.reveal.in{opacity:1;transform:none}
+.container{max-width:1060px;margin:0 auto;padding:0 24px}
+.pagepad{padding-top:110px;padding-bottom:70px;min-height:80vh}

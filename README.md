@@ -3,7 +3,7 @@
 **A milestone-verified grant DAO on GenLayer — where money moves only when the work is real.**
 
 Live app: **https://agora-grants.vercel.app**
-Contract (Bradbury Testnet): [`0x87d300D4F0774775a25189C67De9Dc79a5671C1a`](https://explorer-bradbury.genlayer.com/address/0x87d300D4F0774775a25189C67De9Dc79a5671C1a)
+Contract (Bradbury Testnet): [`0x87d300D4F0774775a25189C67De9Dc79a5671C1a`](https://explorer-studio.genlayer.com/address/0x87d300D4F0774775a25189C67De9Dc79a5671C1a)
 
 ---
 

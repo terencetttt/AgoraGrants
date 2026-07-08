@@ -57,21 +57,45 @@ export async function connectWallet(): Promise<string> {
 }
 
 // ---- SWITCH WALLET ----
-// Rabby/MetaMask silently reuse the same account on a plain eth_requestAccounts
-// call if already connected. wallet_requestPermissions forces the extension to
-// show its account picker again, letting the user actively choose a different one.
+// Rabby's account switcher lives inside the extension itself, not in a dApp-triggered
+// popup like MetaMask's wallet_requestPermissions. This attempts the MetaMask-style
+// prompt (harmless no-op on Rabby) AND relies on the accountsChanged listener below
+// to pick up whatever account the user selects inside the Rabby extension.
 export async function switchWallet(): Promise<string> {
   const eth = (window as any).ethereum
   if (!eth) throw new Error('No wallet found. Please install Rabby or MetaMask.')
-  await eth.request({
-    method: 'wallet_requestPermissions',
-    params: [{ eth_accounts: {} }]
-  })
+  try {
+    await eth.request({
+      method: 'wallet_requestPermissions',
+      params: [{ eth_accounts: {} }]
+    })
+  } catch { /* unsupported on some wallets (e.g. Rabby) — safe to ignore */ }
   const accounts: string[] = await eth.request({ method: 'eth_requestAccounts' })
   connectedAddress = getAddress(accounts[0])
   await ensureCorrectNetwork()
   client = createClient({ chain: testnetBradbury, account: connectedAddress as any })
   return connectedAddress
+}
+
+// ---- ACCOUNT CHANGE LISTENER ----
+// The reliable cross-wallet way to detect a switch: the wallet extension itself
+// emits this event the moment the user picks a different account, whether that
+// happens in Rabby's own UI or via a MetaMask-style picker.
+export function onAccountsChanged(callback: (address: string | null) => void): void {
+  const eth = (window as any).ethereum
+  if (!eth || !eth.on) return
+  eth.on('accountsChanged', async (accounts: string[]) => {
+    if (!accounts || accounts.length === 0) {
+      connectedAddress = null
+      client = null
+      callback(null)
+      return
+    }
+    connectedAddress = getAddress(accounts[0])
+    try { await ensureCorrectNetwork() } catch { /* user can retry on next write */ }
+    client = createClient({ chain: testnetBradbury, account: connectedAddress as any })
+    callback(connectedAddress)
+  })
 }
 
 function getReadClient(): any {

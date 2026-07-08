@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, computed, ref } from 'vue'
 import { store, navigate, setTheme } from './store'
-import { connectWallet, switchWallet } from './client'
+import { connectWallet, switchWallet, onAccountsChanged } from './client'
 import Home from './pages/Home.vue'
 import Proposals from './pages/Proposals.vue'
 import Detail from './pages/Detail.vue'
@@ -24,7 +24,10 @@ async function onSwitchWallet() {
   catch (e: any) { alert(e.message || 'Could not switch wallet') }
   switching.value = false
 }
-onMounted(() => setTheme(store.theme))
+onMounted(() => {
+  setTheme(store.theme)
+  onAccountsChanged((address) => { store.wallet = address })
+})
 </script>
 
 <template>
@@ -37,7 +40,7 @@ onMounted(() => setTheme(store.theme))
       <button class="modebtn" @click="setTheme(store.theme === 'dark' ? 'light' : 'dark')">{{ store.theme === 'dark' ? 'LIGHT' : 'DARK' }}</button>
       <template v-if="shortWallet">
         <span class="wallet">{{ shortWallet }}</span>
-        <button class="switchbtn sans" :disabled="switching" @click="onSwitchWallet">{{ switching ? '...' : 'SWITCH' }}</button>
+        <button class="switchbtn sans" :disabled="switching" @click="onSwitchWallet" title="If nothing happens, open Rabby and pick a different account there — this updates automatically">{{ switching ? '...' : 'SWITCH' }}</button>
       </template>
       <button v-else class="wallet connectbtn" @click="onConnect">CONNECT</button>
     </div>

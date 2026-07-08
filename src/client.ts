@@ -56,6 +56,24 @@ export async function connectWallet(): Promise<string> {
   return connectedAddress
 }
 
+// ---- SWITCH WALLET ----
+// Rabby/MetaMask silently reuse the same account on a plain eth_requestAccounts
+// call if already connected. wallet_requestPermissions forces the extension to
+// show its account picker again, letting the user actively choose a different one.
+export async function switchWallet(): Promise<string> {
+  const eth = (window as any).ethereum
+  if (!eth) throw new Error('No wallet found. Please install Rabby or MetaMask.')
+  await eth.request({
+    method: 'wallet_requestPermissions',
+    params: [{ eth_accounts: {} }]
+  })
+  const accounts: string[] = await eth.request({ method: 'eth_requestAccounts' })
+  connectedAddress = getAddress(accounts[0])
+  await ensureCorrectNetwork()
+  client = createClient({ chain: testnetBradbury, account: connectedAddress as any })
+  return connectedAddress
+}
+
 function getReadClient(): any {
   if (client) return client
   return createClient({ chain: testnetBradbury })

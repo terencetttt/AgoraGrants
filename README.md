@@ -3,7 +3,7 @@
 **A milestone-verified grant DAO on GenLayer — where money moves only when the work is real.**
 
 Live app: **https://agora-grants.vercel.app**
-Contract (Bradbury Testnet): [`0x87d300D4F0774775a25189C67De9Dc79a5671C1a`](https://explorer-studio.genlayer.com/address/0x87d300D4F0774775a25189C67De9Dc79a5671C1a)
+Contract (Bradbury Testnet): [`0xCb91b3A827c5FE73D43A9431FC5a1fbB9cfBfea1`](https://explorer-bradbury.genlayer.com/address/0xCb91b3A827c5FE73D43A9431FC5a1fbB9cfBfea1)
 
 ---
 
@@ -55,7 +55,7 @@ Two independent AI consensus mechanics — screening and verification — both h
 git clone https://github.com/terencetttt/AgoraGrants
 cd AgoraGrants
 npm install
-echo "VITE_CONTRACT_ADDRESS=0x87d300D4F0774775a25189C67De9Dc79a5671C1a" > .env
+echo "VITE_CONTRACT_ADDRESS=0xCb91b3A827c5FE73D43A9431FC5a1fbB9cfBfea1" > .env
 npm run dev
 ```
 

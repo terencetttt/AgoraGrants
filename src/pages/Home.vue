@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, computed } from 'vue'
-import { navigate, store } from '../store'
-import { getStats, getAllProposals, switchWallet } from '../client'
+import { ref, onMounted, onUnmounted } from 'vue'
+import { navigate } from '../store'
+import { getStats, getAllProposals } from '../client'
 import heroImg from '../assets/hero.jpg'
 
 const words = ['verified', 'trustless', 'earned', 'incorruptible']
@@ -12,19 +12,6 @@ let wordTimer: any = null
 const stats = ref({ members: 0, treasury: 0, released: 0, proposals: 0 })
 const shown = ref({ members: 0, treasury: 0, released: 0, proposals: 0 })
 const featured = ref<any[]>([])
-const switching = ref(false)
-
-const shortWallet = computed(() =>
-  store.wallet ? store.wallet.slice(0, 6) + '...' + store.wallet.slice(-4) : null
-)
-
-async function onSwitchWallet() {
-  switching.value = true
-  try { store.wallet = await switchWallet() }
-  catch (e: any) { alert(e.message || 'Could not switch wallet') }
-  switching.value = false
-}
-
 function countUp() {
   const start = performance.now()
   const dur = 1200
@@ -94,9 +81,6 @@ function statusBadge(p: any): { text: string, cls: string } {
       <p class="sub sans">A grant DAO where money moves only when the work is real. AI screens every proposal, members cast the votes, and the contract itself inspects each milestone before a single token is released.</p>
       <button class="btn primary" @click="navigate('profile')">Join the assembly</button>
       <button class="btn ghost heroghost" @click="navigate('proposals')">See the proposals</button>
-      <button v-if="shortWallet" class="btn ghost switchbtn sans" :disabled="switching" @click="onSwitchWallet">
-        {{ switching ? 'Switching...' : 'Switch wallet (' + shortWallet + ')' }}
-      </button>
     </div>
   </header>
 
@@ -153,8 +137,6 @@ function statusBadge(p: any): { text: string, cls: string } {
 .word.out{opacity:0;transform:translateY(12px)}
 .sub{font-size:15.5px;color:#C4B89F;max-width:470px;margin:0 0 36px;line-height:1.75}
 .heroghost{margin-left:10px;background:rgba(4,12,16,0.5);color:#E9DFC9;border:1px solid rgba(233,223,201,0.35)}
-.switchbtn{display:block;margin-top:18px;margin-left:0;background:transparent;color:#C4B89F;border:1px solid rgba(233,223,201,0.25);font-size:11.5px;letter-spacing:1px;padding:9px 18px}
-.switchbtn:hover{color:#E8A04C;border-color:#C97B2A}
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:-72px;position:relative;z-index:5;margin-bottom:110px}
 .stat{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:24px 22px}
 .stat .label{font-size:10px;letter-spacing:2px;color:var(--ink2);text-transform:uppercase}

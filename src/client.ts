@@ -1,17 +1,17 @@
 import { createClient } from 'genlayer-js'
-import { studionet } from 'genlayer-js/chains'
+import { testnetBradbury } from 'genlayer-js/chains'
 import { TransactionStatus } from 'genlayer-js/types'
 import { getAddress } from 'viem'
 
 // ---- ADDRESS (env first, fallback second — keep both in sync on redeploy) ----
-const FALLBACK_ADDRESS = '0x87d300D4F0774775a25189C67De9Dc79a5671C1a'
+const FALLBACK_ADDRESS = '0xCb91b3A827c5FE73D43A9431FC5a1fbB9cfBfea1'
 export const CONTRACT_ADDRESS = ((import.meta as any).env.VITE_CONTRACT_ADDRESS ||
   FALLBACK_ADDRESS) as string
 
 let client: any = null
 export let connectedAddress: string | null = null
 
-const CHAIN_ID_HEX = '0x' + studionet.id.toString(16)
+const CHAIN_ID_HEX = '0x' + testnetBradbury.id.toString(16)
 
 // ---- NETWORK GUARD (runs on connect AND before every write) ----
 async function ensureCorrectNetwork(): Promise<void> {
@@ -28,9 +28,9 @@ async function ensureCorrectNetwork(): Promise<void> {
         method: 'wallet_addEthereumChain',
         params: [{
           chainId: CHAIN_ID_HEX,
-          chainName: studionet.name,
-          rpcUrls: studionet.rpcUrls.default.http,
-          nativeCurrency: studionet.nativeCurrency
+          chainName: testnetBradbury.name,
+          rpcUrls: testnetBradbury.rpcUrls.default.http,
+          nativeCurrency: testnetBradbury.nativeCurrency
         }]
       })
       await eth.request({
@@ -52,13 +52,13 @@ export async function connectWallet(): Promise<string> {
   // checksummed, and TreeMap string keys are case-sensitive.
   connectedAddress = getAddress(accounts[0])
   await ensureCorrectNetwork()
-  client = createClient({ chain: studionet, account: connectedAddress as any })
+  client = createClient({ chain: testnetBradbury, account: connectedAddress as any })
   return connectedAddress
 }
 
 function getReadClient(): any {
   if (client) return client
-  return createClient({ chain: studionet })
+  return createClient({ chain: testnetBradbury })
 }
 
 // ---- CORE READ / WRITE ----
